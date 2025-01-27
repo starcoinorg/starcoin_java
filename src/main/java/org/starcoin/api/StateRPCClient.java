@@ -214,4 +214,21 @@ public class StateRPCClient {
         return this.getListResource(address, null, null, startIndex, maxSize);
     }
 
+    /**
+     * 通过 address 查询 TableInfo
+     *
+     * @param address
+     * @return
+     * @throws JSONRPC2SessionException
+     */
+    public TableInfo getTableInfo(String address) throws JSONRPC2SessionException, JsonProcessingException {
+        JsonRPCClient<TableInfo> client = new JsonRPCClient<>();
+        List<Object> param = new ArrayList<>();
+        param.add(address);
+        ListResourceOption option = new ListResourceOption();
+        option.setDecode(true);
+        param.add(option);
+        return client.getSubObject(session, "state.get_table_info", param, 0, "json", TableInfo.class);
+    }
+
 }

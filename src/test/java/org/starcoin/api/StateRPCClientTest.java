@@ -22,6 +22,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.starcoin.bean.ListResource;
 import org.starcoin.bean.Resource;
+import org.starcoin.bean.TableInfo;
 import org.starcoin.bean.TokenInfo;
 
 import java.math.BigInteger;
@@ -89,7 +90,7 @@ public class StateRPCClientTest {
     }
 
     @Test
-    public void testGetAllResourcesByAddress() throws JSONRPC2SessionException{
+    public void testGetAllResourcesByAddress() throws JSONRPC2SessionException {
         //查询所有
         ListResource listResource = stateRPCClient.getAllResourcesByAddress("0x00000000000000000000000000000001");
         Map<String, Resource> resources = listResource.getResources();
@@ -97,41 +98,50 @@ public class StateRPCClientTest {
     }
 
     @Test
-    public void testGetResourceListByPage() throws JSONRPC2SessionException{
+    public void testGetResourceListByPage() throws JSONRPC2SessionException {
         //分页查询 10 个
-        ListResource listResource = stateRPCClient.getResourceListByPage("0x00000000000000000000000000000001",1,10);
+        ListResource listResource = stateRPCClient.getResourceListByPage("0x00000000000000000000000000000001", 1, 10);
         System.out.println(listResource.getResources().size());
     }
 
     @Test
-    public void testGetAllResourcesByResourceTypes() throws JSONRPC2SessionException{
+    public void testGetAllResourcesByResourceTypes() throws JSONRPC2SessionException {
         //指定资源类型查询
         String address = "0x86fDDFFbBB603C428e5c74442CE1e966";
         List<String> resTypes1 = Arrays.asList("0x00000000000000000000000000000001::Account::Balance<0x00000000000000000000000000000001::STC::STC>");
-        ListResource listResource = stateRPCClient.getAllResourcesByResourceTypes(address,resTypes1);
-        System.out.println(listResource.toString());
+        ListResource listResource = stateRPCClient.getAllResourcesByResourceTypes(address, resTypes1);
+        System.out.println(listResource);
         System.out.println(listResource.getResources().size());
 
         List<String> resTypes2 = Arrays.asList("0x00000000000000000000000000000001::Account::Balance<0x00000000000000000000000000000001::STC::STC>"
-                ,"0x00000000000000000000000000000001::Account::Balance<0x8c109349c6bd91411d6bc962e080c4a3::STAR::STAR>");
-        ListResource listResource2 = stateRPCClient.getAllResourcesByResourceTypes(address,resTypes2);
-        System.out.println(listResource2.toString());
+                , "0x00000000000000000000000000000001::Account::Balance<0x8c109349c6bd91411d6bc962e080c4a3::STAR::STAR>");
+        ListResource listResource2 = stateRPCClient.getAllResourcesByResourceTypes(address, resTypes2);
+        System.out.println(listResource2);
         System.out.println(listResource2.getResources().size());
     }
 
     @Test
-    public void testGetAllResourcesByTypeTags() throws JSONRPC2SessionException{
+    public void testGetAllResourcesByTypeTags() throws JSONRPC2SessionException {
         //指定 TypeTags 查询
         String address = "0x86fDDFFbBB603C428e5c74442CE1e966";
         List<String> typeTags1 = Arrays.asList("0x00000000000000000000000000000001::Account::Balance");
-        ListResource listResource = stateRPCClient.getAllResourcesByTypeTags(address,typeTags1);
-        System.out.println(listResource.toString());
+        ListResource listResource = stateRPCClient.getAllResourcesByTypeTags(address, typeTags1);
+        System.out.println(listResource);
         System.out.println(listResource.getResources().size());
 
-        List<String> typeTags2 = Arrays.asList("0x00000000000000000000000000000001::Account::Balance","0x00000000000000000000000000000001::Account::Account");
-        ListResource listResource2 = stateRPCClient.getAllResourcesByTypeTags(address,typeTags2);
-        System.out.println(listResource2.toString());
+        List<String> typeTags2 = Arrays.asList("0x00000000000000000000000000000001::Account::Balance", "0x00000000000000000000000000000001::Account::Account");
+        ListResource listResource2 = stateRPCClient.getAllResourcesByTypeTags(address, typeTags2);
+        System.out.println(listResource2);
         System.out.println(listResource2.getResources().size());
+    }
+
+    @Test
+    public void testGetTableInfo() throws JSONRPC2SessionException, JsonProcessingException {
+        String address = "0x86fDDFFbBB603C428e5c74442CE1e966";
+        TableInfo tableInfo = stateRPCClient.getTableInfo(address);
+        if (tableInfo != null) {
+            System.out.println(tableInfo);
+        }
     }
 
 }
